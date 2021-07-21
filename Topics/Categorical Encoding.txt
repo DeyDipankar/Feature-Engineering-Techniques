@@ -1,0 +1,8 @@
+1) One Hot Encoding
+2) Ordinal Encoding
+3) Count/Frequency Encoding(replacing the categories with frequency or toal count of those categories) (doesn't exapand the faeture space)
+4) Ordered Ordinal Encoding/Target guided Ordinal Encoding (doesn't expand the feature space)
+5) Mean Encoding(doesn't expand the feature space)
+6) Probability Ratio Encoding(for Binary classification)
+7) WeightOf Evidence Encoding
+8) Rare label Encoding
