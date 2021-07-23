@@ -1,0 +1,70 @@
+1) One Hot Encoding
+
+from feature_engine.encoding import OneHotEncoder as fe_OneHotEncoder
+ohe_enc = fe_OneHotEncoder(
+    top_categories=None,
+    variables=['sex', 'embarked'],  # we can select which variables to encode
+    drop_last=True)  # to return k-1, false to return k
+ohe_enc.fit(X_train.fillna('Missing'))
+
+-----Top10--------(it handles new catogories in the test set)
+
+ohe_enc = fe_OneHotEncoder(
+    top_categories=10,  # you can change this value to select more or less variables
+    # we can select which variables to encode
+    variables=['Neighborhood', 'Exterior1st', 'Exterior2nd'],
+    drop_last=False)
+
+2) Ordinal Encoding (not suitable for linear models)
+
+from feature_engine.encoding import OrdinalEncoder
+ordinal_enc = OrdinalEncoder(
+    encoding_method='arbitrary',
+    variables=['Neighborhood', 'Exterior1st', 'Exterior2nd'])
+
+ordinal_enc.fit(X_train)
+
+3) Ordered Ordinal Encoding/Target guided Ordinal Encoding (doesn't expand the feature space)
+
+ordinal_enc = OrdinalEncoder(
+    # NOTE that we indicate ordered in the encoding_method, otherwise it assings numbers arbitrarily
+    encoding_method='ordered',
+    variables=['Neighborhood', 'Exterior1st', 'Exterior2nd'])
+
+4) Count/Frequency Encoding(replacing the categories with frequency or toal count of those categories) (doesn't exapand the faeture space)
+
+count_enc = CountFrequencyEncoder(
+    encoding_method='count', # to do frequency ==> encoding_method='frequency'
+    variables=['Neighborhood', 'Exterior1st', 'Exterior2nd'])
+
+count_enc.fit(X_train)
+
+5) Mean Encoding(doesn't expand the feature space)
+
+from feature_engine.encoding import MeanEncoder
+mean_enc = MeanEncoder(
+    variables=['cabin', 'sex', 'embarked'])
+
+6) Probability Ratio Encoding(for Binary classification)
+
+from feature_engine.encoding import PRatioEncoder
+ratio_enc = PRatioEncoder(
+    encoding_method = 'ratio',
+    variables=['cabin', 'sex', 'embarked'])
+
+7) WeightOf Evidence Encoding
+
+from category_encoders.woe import WOEEncoder
+woe_enc = fe_WoEEncoder(variables=['cabin', 'sex', 'embarked'])
+
+8) Rare label Encoding - Encoding infrequent categories into Rare labels, helps in obtaining less cardinal variable and also addresses problem rising from categories not present in train data but present in test data
+
+from feature_engine.encoding import RareLabelEncoder
+rare_encoder = RareLabelEncoder(
+    tol=0.05,  # minimal percentage to be considered non-rare
+    n_categories=4, # minimal number of categories the variable should have to re-cgroup rare categories
+    variables=['Neighborhood', 'Exterior1st', 'Exterior2nd',
+               'MasVnrType', 'ExterQual', 'BsmtCond'] # variables to re-group
+)
+
+9) Binary encoding and Feature hashing
