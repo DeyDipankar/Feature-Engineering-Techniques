@@ -1,0 +1,9 @@
+1) Logarithmic
+
+2) Exponential
+
+3) Reciprocal
+
+4) Box-Cox
+
+5) Yeo-Johnson
