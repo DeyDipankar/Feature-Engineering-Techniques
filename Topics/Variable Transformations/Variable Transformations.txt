@@ -7,3 +7,26 @@
 4) Box-Cox
 
 5) Yeo-Johnson
+
+def diagnostic_plots(df, variable):
+    
+    # function to plot a histogram and a Q-Q plot
+    # side by side, for a certain variable
+    
+    plt.figure(figsize=(15,6))
+    plt.subplot(1, 2, 1)
+    df[variable].hist()
+
+    plt.subplot(1, 2, 2)
+    stats.probplot(df[variable], dist="norm", plot=plt)
+
+    plt.show()
+
+feature_engine -
+import feature_engine.transformation as vt
+
+lt = vt.LogTransformer(variables = ['LotArea', 'GrLivArea'])
+rt = vt.ReciprocalTransformer(variables = ['LotArea', 'GrLivArea'])
+et = vt.PowerTransformer(variables = ['LotArea', 'GrLivArea'])
+bct = vt.BoxCoxTransformer(variables = ['LotArea', 'GrLivArea'])
+yjt = vt.YeoJohnsonTransformer(variables = ['LotArea', 'GrLivArea'])
