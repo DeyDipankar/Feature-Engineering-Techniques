@@ -1,0 +1,47 @@
+1) Unsupervised-------------------------------------------------------------
+
+A) Equal-width Dicretization
+
+disc = EqualWidthDiscretiser(bins=10, variables = ['age', 'fare'])
+disc.fit(X_train)
+
+B) Equal-frequency Discretization
+
+from feature_engine.discretisation import EqualFrequencyDiscretiser
+disc = EqualFrequencyDiscretiser(q=10, variables = ['age', 'fare'])
+
+disc.fit(X_train)
+
+C) K-Means Discreatization
+
+from sklearn.preprocessing import KBinsDiscretizer
+disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='kmeans')
+
+disc.fit(X_train[['age', 'fare']])
+
+
+2) Supervised-----------------------------------------------------------------
+
+A) Descision Tree-based Discretization
+
+from feature_engine.discretisation import DecisionTreeDiscretiser
+treeDisc = DecisionTreeDiscretiser(cv=10, scoring='accuracy',
+                                   variables=['age', 'fare'],
+                                   regression=False,
+                                   param_grid={'max_depth': [1, 2, 3],
+                                              'min_samples_leaf':[10,4]})
+
+
+3)Domain knowledge-based(custom)----------------------------------------------
+
+# bucket boundaries
+buckets = [0, 20, 40, 60, 1000]
+
+# bucket labels
+labels = ['0-20', '20-40', '40-60', '>60']
+
+# discretisation
+data['Age_buckets_labels'] = pd.cut(
+    data['age'], bins=buckets, labels=labels, include_lowest=True)
+
+data['Age_buckets'] = pd.cut(data['age'], bins=buckets, include_lowest=True)
