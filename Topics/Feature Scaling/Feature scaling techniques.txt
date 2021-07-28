@@ -1,0 +1,48 @@
+library used - sklearn
+
+1) ---------------------------------------------Standardisation---------------------------------------
+
+sklearn.preprocessing.StandardScaler()
+
+2) ---------------------------------------------Mean normalisation-----------------------------------
+
+x_scaled = (x - x_mean) / ( x_max - x_min)
+scaler_mean = StandardScaler(with_mean=True, with_std=False)
+scaler_minmax = RobustScaler(with_centering=False,
+                             with_scaling=True,
+                             quantile_range=(0, 100))
+
+scaler_mean.fit(X_train)
+scaler_minmax.fit(X_train)
+
+3) ---------------------------Scaling to minimum and maximum values - MinMaxScaling-------------------------
+
+sklearn.preprocessing.MinMaxScaler()
+
+4) -------------------------------Scaling to maximum value - MaxAbsScaling ----------------------------------
+
+X_scaled = X / abs(X.max)
+from sklearn.preprocessing import MaxAbsScaler
+scaler = MaxAbsScaler()
+scaler.fit(X_train)
+
+5) ------------------------------Scaling to quantiles and median - RobustScaling------------------------------
+
+X_scaled = X - X_median / ( X.quantile(0.75) - X.quantile(0.25) )
+scaler = RobustScaler()
+scaler.fit(X_train)
+
+6) -------------------------------------Normalization to vector unit length-----------------------------------
+
+X_scaled_l1 = X / l1(X)
+
+X_scaled_l2 = X / l2(X)
+
+l1(X) = |x1| + |x2| + ... + |xn| --Manhattan
+
+l2(X) = sqr( x1^2 + x2^2 + ... + xn^2 )- Euclidean
+
+from sklearn.preprocessing import Normalizer
+
+scaler = Normalizer(norm='l2')
+scaler = Normalizer(norm='l1')

@@ -1,0 +1,56 @@
+1) Trimming: remove the outliers from our dataset-----------------------------------------------------------------------------------------
+
+feature_engine.outliers.OutlierTrimmer(capping_method='gaussian', tail='right', fold=3, variables=None, missing_values='raise')
+>capping_method='gaussian' - fold gives the value to multiply the std.
+>capping_method='iqr' -fold is the value to multiply the IQR.
+>capping_method='quantile' - fold is the percentile on each tail that should be censored. For example, if fold=0.05, the limits will be the 5th and 			     95th percentiles. If fold=0.1, the limits will be the 10th and 90th percentiles.
+
+2) Treat outliers as missing data, and proceed with any missing data imputation technique--------------------------------------------------
+
+3) Discrestisation: outliers are placed in border bins together with higher or lower values of the distribution----------------------------
+
+4) Censoring: capping the variable distribution at a max and / or minimum value------------------------------------------------------------
+
+from feature_engine.outliers import Winsorizer
+
+> using the inter-quantal range proximity rule
+
+windsoriser = Winsorizer(capping_method='iqr', # choose iqr for IQR rule boundaries or gaussian for mean and std
+                          tail='both', # cap left, right or both tails 
+                          fold=1.5,
+                          variables=['RM', 'LSTAT', 'CRIM'])
+windsoriser.fit(boston)
+
+> using quantiles
+
+windsoriser = Winsorizer(capping_method='quantiles', # choose from iqr, gaussian or quantiles
+                          tail='both', # cap left, right or both tails 
+                          fold=0.05,
+                          variables=['RM', 'LSTAT', 'CRIM'])
+
+
+> using the gaussian approximation
+
+windsoriser = Winsorizer(capping_method='gaussian', # choose iqr for IQR rule boundaries or gaussian for mean and std
+                          tail='both', # cap left, right or both tails 
+                          fold=3,
+                          variables=['RM', 'LSTAT', 'CRIM'])
+
+> arbitrarily
+
+from feature_engine.outliers import ArbitraryOutlierCapper
+capper = ArbitraryOutlierCapper(max_capping_dict={
+    'age': 50, 'fare': 200},
+    min_capping_dict={
+    'age': 10, 'fare': 100})
+
+capper.fit(data.fillna(0))
+
+
+Questions------------------------------------------------------
+
+1)In my dataset all data is extremely skewed. What should I do first  variable transformation or outlier engineering?
+
+A: It depends on the aim. If the idea is to find the true outliers, I would do this first. If the idea is to improve model performance, then you could do it either way.
+
+Having said this, if the variables are extremely skewed, the methods I described may return funny results, and also not too sure finding outliers would improve performance dramatically.
